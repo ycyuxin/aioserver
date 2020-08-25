@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>调试</h1>
+    <h2>asyncio</h2>
+    <form method="post">
+        <input type="hidden" name="_action" value="asyncio">
+        <input type="checkbox" name="debug" id="debug"{% if asyncio.debug %} checked{% endif %} ><label for="debug">asyncio
+        调试模式</label><br>
+        <button type="submit">提交</button>
+    </form>
+    <h2>日志级别</h2>
+    <form method="post">
+        <input type="hidden" name="_action" value="log_level">
+        <table>
+            <tr>
+                <th>name</th>
+                <th>level</th>
+            </tr>
+            <tr>
+                <td><label for="default">default</label></td>
+                <td>
+                    <select name="default" id="default">
+                        {% for value in ['NOTSET', 'CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'] %}
+                            <option value="{{ value }}"{% if value == default %}
+                                    selected{% endif %} >{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            {% for name, level in loggers.items() %}
+                <tr>
+                    <td><label for="{{ name }}">{{ name }}</label></td>
+                    <td>
+                        <select name="{{ name }}" id="{{ name }}">
+                            {% for value in ['NOTSET', 'CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'] %}
+                                <option value="{{ value }}"{% if value == level %}
+                                        selected{% endif %} >{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <button type="submit">提交</button>
+    </form>
+{% endblock %}

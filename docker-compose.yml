@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  aioserver:
+    build: .
+    container_name: aioserver
+    ports:
+      - "20209:20209"
+      - "20208:20208"
+      - "20208:20208/udp"
+    volumes:
+      - .:/app
