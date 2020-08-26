@@ -2,17 +2,17 @@ import asyncio
 import logging
 
 import aiohttp_jinja2
-from aiohttp.web import Response
+from aiohttp.web import Request, Response
 
 logger = logging.getLogger(__name__)
 
 
-async def index_view(request):
+async def index_view(_: Request):
     return Response(text='你好!')
 
 
 @aiohttp_jinja2.template('debug.html')
-async def debug_view(request):
+async def debug_view(request: Request):
     loop = asyncio.get_running_loop()
 
     if request.method == 'POST':

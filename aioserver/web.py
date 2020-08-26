@@ -1,5 +1,4 @@
 import logging
-import socket
 from pathlib import Path
 
 import aiohttp_debugtoolbar
@@ -47,5 +46,4 @@ def run_web(app):
     config = app['config']
 
     logger.info('启动 web 服务: {}'.format(config.web))
-    reuse_port = hasattr(socket, 'SO_REUSEPORT')
-    web.run_app(app, port=config.web, print=lambda _: None, reuse_port=reuse_port, access_log_class=AccessLogger)
+    web.run_app(app, port=config.web, print=lambda _: None, access_log_class=AccessLogger)
