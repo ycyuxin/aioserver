@@ -3,3 +3,4 @@ aiohttp_debugtoolbar
 aiohttp_jinja2
 aiomonitor
 click
+uvloop; sys_platform == 'linux'

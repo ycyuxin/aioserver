@@ -1,6 +1,7 @@
 import asyncio
 import json
 import logging
+import sys
 from types import SimpleNamespace
 
 import aiomonitor
@@ -42,15 +43,27 @@ def start_servers(config):
 
 @click.command()
 @click.option('-c', '--conf-file', default='/etc/aioserver.json', type=click.File(encoding='utf-8'), help='配置文件')
-def cli(conf_file):
+@click.option('-d', '--debug', is_flag=True, help='打开调试模式')
+def cli(conf_file, debug):
     # 分析配置文件
     config = init_config(conf_file)
 
     # 初始化日志系统
     init_logger(config.log_levels)
 
+    # 调试模式
+    if debug:
+        asyncio.get_event_loop().set_debug(debug)
+
     # 软件版本信息
     logging.info('aioserver-%s' % __version__)
+
+    # Linux 平台上启用 uvloop
+    if sys.platform == 'linux':
+        import uvloop
+
+        logging.info('uvloop-%s' % uvloop.__version__)
+        uvloop.install()
 
     # 启动服务器
     start_servers(config)
