@@ -11,7 +11,8 @@ COPY etc/aioserver-example.json /etc/aioserver.json
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+# 不使用缓存，采用阿里云 pypi
+RUN pip install --no-cache-dir -i https://mirrors.aliyun.com/pypi/simple/ -r requirements.txt
 
 ADD . .
 
