@@ -13,6 +13,13 @@ class UdpProtocol(asyncio.DatagramProtocol):
         self.transport = transport
 
     def datagram_received(self, data: bytes, addr: Tuple[str, int]) -> None:
+        if logger.isEnabledFor(logging.DEBUG):
+            logger.debug('%s:%d - 收到 - %s', *addr, data.hex(' '))
+        self.sendto(data, addr)
+
+    def sendto(self, data, addr):
+        if logger.isEnabledFor(logging.DEBUG):
+            logger.debug('%s:%d - 发送 - %s', *addr, data.hex(' '))
         self.transport.sendto(data, addr)
 
 

@@ -11,6 +11,9 @@ class TcpProtocol(asyncio.Protocol):
     peername: str = None
     transport: Transport = None
 
+    def __str__(self):
+        return self.peername
+
     def connection_made(self, transport: Transport) -> None:
         self.peername = '{}:{}'.format(*transport.get_extra_info('peername'))
         self.transport = transport
@@ -25,6 +28,13 @@ class TcpProtocol(asyncio.Protocol):
         logger.info(f'来自 {self.peername} 的连接已断开：{exc or "关闭"}')
 
     def data_received(self, data: bytes) -> None:
+        if logger.isEnabledFor(logging.DEBUG):
+            logger.debug('%s - 收到 - %s', self, data.hex(' '))
+        self.write(data)
+
+    def write(self, data: bytes):
+        if logger.isEnabledFor(logging.DEBUG):
+            logger.debug('%s - 发送 - %s', self, data.hex(' '))
         self.transport.write(data)
 
 

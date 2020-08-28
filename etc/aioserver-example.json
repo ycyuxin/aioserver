@@ -3,6 +3,6 @@
   "tcp": 20208,
   "udp": 20208,
   "log_levels": {
-    "default": "INFO"
+    "default": "DEBUG"
   }
 }
