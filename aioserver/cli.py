@@ -37,7 +37,7 @@ def start_servers(config):
 
     web_app.on_startup.append(on_startup)
 
-    with aiomonitor.start_monitor(asyncio.get_event_loop()):
+    with aiomonitor.start_monitor(asyncio.get_event_loop(), port=config.monitor):
         run_web(web_app)
 
 

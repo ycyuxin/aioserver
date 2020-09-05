@@ -1,7 +1,8 @@
 {
-  "web": 20209,
   "tcp": 20208,
   "udp": 20208,
+  "web": 20209,
+  "monitor": 20210,
   "log_levels": {
     "default": "DEBUG"
   }
