@@ -1,6 +1,7 @@
 import asyncio
 import json
 import logging
+import platform
 import sys
 from types import SimpleNamespace
 
@@ -38,7 +39,11 @@ def start_servers(config):
     web_app.on_startup.append(on_startup)
 
     with aiomonitor.start_monitor(asyncio.get_event_loop(), port=config.monitor):
-        run_web(web_app)
+        try:
+            run_web(web_app)
+        except RuntimeError as exc:
+            if not asyncio.get_event_loop().is_closed():
+                logging.error(f'遇到错误: {exc}, 程序终止')
 
 
 @click.command()
@@ -56,6 +61,7 @@ def cli(conf_file, debug):
         asyncio.get_event_loop().set_debug(debug)
 
     # 软件版本信息
+    logging.info('python-%s' % platform.python_version())
     logging.info('aioserver-%s' % __version__)
 
     # Linux 平台上启用 uvloop
